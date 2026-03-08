@@ -1,4 +1,7 @@
-function findNearbyResources(userCoords, type) {
+import { resources } from './resources.js';
+import { getDistance } from './geo.js';
+
+export function findNearbyResources(userCoords, type) {
   if (!userCoords) return [];
 
   return resources
