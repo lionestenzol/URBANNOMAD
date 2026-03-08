@@ -21,16 +21,16 @@
 
     <!-- Tabs -->
     <div class="tabs">
-        <div class="tab-list">
-            <button class="tab-trigger active" data-tab="zones">Zones</button>
-            <button class="tab-trigger" data-tab="vehicle">Vehicle</button>
-            <button class="tab-trigger" data-tab="gear">Gear</button>
-            <button class="tab-trigger" data-tab="resources">Resources</button>
-            <button class="tab-trigger" data-tab="survival">Plan</button>
+        <div class="tab-list" role="tablist">
+            <button class="tab-trigger active" data-tab="zones" role="tab" aria-selected="true" aria-controls="zones-tab">Zones</button>
+            <button class="tab-trigger" data-tab="vehicle" role="tab" aria-selected="false" aria-controls="vehicle-tab">Vehicle</button>
+            <button class="tab-trigger" data-tab="gear" role="tab" aria-selected="false" aria-controls="gear-tab">Gear</button>
+            <button class="tab-trigger" data-tab="resources" role="tab" aria-selected="false" aria-controls="resources-tab">Resources</button>
+            <button class="tab-trigger" data-tab="survival" role="tab" aria-selected="false" aria-controls="survival-tab">Plan</button>
         </div>
 
         <!-- Zones Tab -->
-        <div id="zones-tab" class="tab-content active space-y">
+        <div id="zones-tab" class="tab-content active" role="tabpanel">
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Log Current Zone</h2>
@@ -62,13 +62,13 @@
         </div>
 
         <!-- Vehicle Tab -->
-        <div id="vehicle-tab" class="tab-content space-y">
+        <div id="vehicle-tab" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Vehicle Operations</h2>
                     <div class="input-grid">
-                        <input type="number" id="mileage-input" placeholder="Current Mileage">
-                        <input type="number" id="fuel-input" placeholder="Gallons Added">
+                        <input type="number" id="mileage-input" placeholder="Current Mileage" min="0">
+                        <input type="number" id="fuel-input" placeholder="Gallons Added" min="0.1" step="0.1">
                     </div>
                     <button class="full-width" id="log-vehicle-btn">Log Fuel & Mileage</button>
                 </div>
@@ -88,7 +88,7 @@
         </div>
 
         <!-- Gear Tab -->
-        <div id="gear-tab" class="tab-content space-y">
+        <div id="gear-tab" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Nomad Gear Kit</h2>
@@ -118,7 +118,7 @@
         </div>
 
         <!-- Resources Tab -->
-        <div id="resources-tab" class="tab-content space-y">
+        <div id="resources-tab" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Find Resources</h2>
@@ -152,15 +152,15 @@
         </div>
 
         <!-- Survival Planner Tab -->
-        <div id="survival-tab" class="tab-content space-y">
+        <div id="survival-tab" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Survival Planner</h2>
                     <div class="input-grid">
-                        <input type="number" id="money" placeholder="Money available ($)">
-                        <input type="number" id="food" placeholder="Daily food cost ($)">
-                        <input type="number" id="gas" placeholder="Gas price ($/gal)">
-                        <input type="number" id="mpg-input" placeholder="Vehicle MPG">
+                        <input type="number" id="money" placeholder="Money available ($)" min="0.01" step="0.01">
+                        <input type="number" id="food" placeholder="Daily food cost ($)" min="0.01" step="0.01">
+                        <input type="number" id="gas" placeholder="Gas price ($/gal)" min="0.01" step="0.01">
+                        <input type="number" id="mpg-input" placeholder="Vehicle MPG" min="0.1" step="0.1">
                     </div>
                     <button class="full-width" id="calc-survival-btn">Calculate</button>
                     <div id="survival-result" style="margin-top: 0.75rem;"></div>

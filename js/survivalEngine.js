@@ -1,11 +1,17 @@
 export function calculateSurvival({ money, dailyFood, gasPrice, mpg }) {
-  const foodDays = Math.floor(money / dailyFood);
-  const gallons = money / gasPrice;
+  const foodBudget = money * 0.7;
+  const fuelBudget = money * 0.3;
+
+  const foodDays = Math.floor(foodBudget / dailyFood);
+  const gallons = fuelBudget / gasPrice;
   const range = gallons * mpg;
 
   return {
     foodDays,
     range,
-    money
+    gallons,
+    money,
+    foodBudget,
+    fuelBudget
   };
 }

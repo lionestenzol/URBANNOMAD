@@ -13,9 +13,12 @@ function switchTab(tabId) {
     });
     document.querySelectorAll('.tab-trigger').forEach(trigger => {
         trigger.classList.remove('active');
+        trigger.setAttribute('aria-selected', 'false');
     });
     document.getElementById(`${tabId}-tab`).classList.add('active');
-    document.querySelector(`.tab-trigger[data-tab="${tabId}"]`).classList.add('active');
+    const activeTab = document.querySelector(`.tab-trigger[data-tab="${tabId}"]`);
+    activeTab.classList.add('active');
+    activeTab.setAttribute('aria-selected', 'true');
 }
 
 // Resource finder
