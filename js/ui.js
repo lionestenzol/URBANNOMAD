@@ -1,5 +1,5 @@
 import { escapeHTML } from './helpers.js';
-import { getLogs, getVehicleLogs, getCoords } from './state.js';
+import { getLogs, getVehicleLogs, getCoords, getUserResources } from './state.js';
 import { zones } from './zones.js';
 
 const gear = [
@@ -223,7 +223,8 @@ export function renderSurvivalResult(result, food, gas) {
     allocItem.appendChild(allocTitle);
     const allocSub = document.createElement('div');
     allocSub.className = 'item-subtitle';
-    allocSub.textContent = `$${result.foodBudget.toFixed(2)} food (70%) / $${result.fuelBudget.toFixed(2)} fuel (30%)`;
+    const foodPct = Math.round((result.foodRatio || 0.7) * 100);
+    allocSub.textContent = `$${result.foodBudget.toFixed(2)} food (${foodPct}%) / $${result.fuelBudget.toFixed(2)} fuel (${100 - foodPct}%)`;
     allocItem.appendChild(allocSub);
     container.appendChild(allocItem);
 
@@ -295,6 +296,44 @@ export function renderSpotStatus(name, status) {
 
     container.innerHTML = '';
     container.appendChild(item);
+}
+
+export function renderUserResources() {
+    const container = document.getElementById('user-resources-list');
+    const card = document.getElementById('user-resources-card');
+    const resources = getUserResources();
+
+    if (resources.length === 0) {
+        card.classList.add('hidden');
+        return;
+    }
+    card.classList.remove('hidden');
+    container.innerHTML = '';
+
+    resources.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'log-item flex-between';
+
+        const info = document.createElement('div');
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'item-title';
+        nameDiv.textContent = r.name;
+        info.appendChild(nameDiv);
+
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'item-subtitle';
+        metaDiv.textContent = `${r.type} · ${r.cost || 'N/A'} · ${r.open || 'N/A'}`;
+        info.appendChild(metaDiv);
+        item.appendChild(info);
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'destructive small';
+        delBtn.textContent = 'Delete';
+        delBtn.setAttribute('data-delete-resource', r.id);
+        item.appendChild(delBtn);
+
+        container.appendChild(item);
+    });
 }
 
 export function showValidationError(elementId, message) {
