@@ -97,12 +97,14 @@ body.dark-mode .tab-trigger.active {
 }
 
 /* Tab content */
-.tab-content {
+.tabs .tab-content {
     display: none;
 }
 
-.tab-content.active {
-    display: block;
+.tabs .tab-content.active {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* Cards */

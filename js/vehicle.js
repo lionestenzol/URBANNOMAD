@@ -7,7 +7,9 @@ export function calculateMPG(currentMileage, fuelAdded, lastMileage) {
 }
 
 export function logVehicle(mileage, fuel) {
-    if (!mileage || !fuel) return false;
+    const m = Number(mileage);
+    const f = Number(fuel);
+    if (!mileage || !fuel || isNaN(m) || isNaN(f) || m <= 0 || f <= 0) return false;
 
     const vehicleLogs = getVehicleLogs();
     const newLog = {

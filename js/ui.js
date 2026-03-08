@@ -176,7 +176,14 @@ export function renderResourceResults(results) {
     if (results.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'log-item';
-        empty.innerHTML = '<div class="item-title">No results found</div><div class="item-subtitle">Try a different category</div>';
+        const emptyTitle = document.createElement('div');
+        emptyTitle.className = 'item-title';
+        emptyTitle.textContent = 'No results found';
+        empty.appendChild(emptyTitle);
+        const emptySub = document.createElement('div');
+        emptySub.className = 'item-subtitle';
+        emptySub.textContent = 'No resources within 50km. Try a different category.';
+        empty.appendChild(emptySub);
         container.appendChild(empty);
         return;
     }
@@ -206,26 +213,60 @@ export function renderResourceResults(results) {
 
 export function renderSurvivalResult(result, food, gas) {
     const container = document.getElementById('survival-result');
-
-    const fuelGallons = (result.money / gas).toFixed(1);
-
     container.innerHTML = '';
+
+    const allocItem = document.createElement('div');
+    allocItem.className = 'log-item';
+    const allocTitle = document.createElement('div');
+    allocTitle.className = 'item-title';
+    allocTitle.textContent = 'Budget Allocation';
+    allocItem.appendChild(allocTitle);
+    const allocSub = document.createElement('div');
+    allocSub.className = 'item-subtitle';
+    allocSub.textContent = `$${result.foodBudget.toFixed(2)} food (70%) / $${result.fuelBudget.toFixed(2)} fuel (30%)`;
+    allocItem.appendChild(allocSub);
+    container.appendChild(allocItem);
 
     const foodItem = document.createElement('div');
     foodItem.className = 'log-item';
-    foodItem.innerHTML = `<div class="item-title">Food Budget</div><div class="item-subtitle">${escapeHTML(String(result.foodDays))} days of food at $${escapeHTML(String(food))}/day</div>`;
+    const foodTitle = document.createElement('div');
+    foodTitle.className = 'item-title';
+    foodTitle.textContent = 'Food Budget';
+    foodItem.appendChild(foodTitle);
+    const foodSub = document.createElement('div');
+    foodSub.className = 'item-subtitle';
+    foodSub.textContent = `${result.foodDays} days of food at $${food}/day`;
+    foodItem.appendChild(foodSub);
     container.appendChild(foodItem);
 
     const fuelItem = document.createElement('div');
     fuelItem.className = 'log-item';
-    fuelItem.innerHTML = `<div class="item-title">Fuel Range</div><div class="item-subtitle">${escapeHTML(String(result.range.toFixed(0)))} miles (${escapeHTML(fuelGallons)} gallons at $${escapeHTML(String(gas))}/gal)</div>`;
+    const fuelTitle = document.createElement('div');
+    fuelTitle.className = 'item-title';
+    fuelTitle.textContent = 'Fuel Range';
+    fuelItem.appendChild(fuelTitle);
+    const fuelSub = document.createElement('div');
+    fuelSub.className = 'item-subtitle';
+    fuelSub.textContent = `${result.range.toFixed(0)} miles (${result.gallons.toFixed(1)} gallons at $${gas}/gal)`;
+    fuelItem.appendChild(fuelSub);
     container.appendChild(fuelItem);
 
     const recItem = document.createElement('div');
     recItem.className = 'log-item';
+    const recTitle = document.createElement('div');
+    recTitle.className = 'item-title';
+    recTitle.textContent = 'Recommendation';
+    recItem.appendChild(recTitle);
     const foodWarning = result.foodDays < 7 ? '\u26A0\uFE0F Low on food budget \u2014 seek free meal resources' : '\u2705 Food budget looks stable';
     const rangeWarning = result.range < 100 ? '\u26A0\uFE0F Limited range \u2014 minimize driving' : '\u2705 Decent travel range';
-    recItem.innerHTML = `<div class="item-title">Recommendation</div><div class="item-subtitle">${foodWarning}</div><div class="item-subtitle">${rangeWarning}</div>`;
+    const foodRec = document.createElement('div');
+    foodRec.className = 'item-subtitle';
+    foodRec.textContent = foodWarning;
+    recItem.appendChild(foodRec);
+    const rangeRec = document.createElement('div');
+    rangeRec.className = 'item-subtitle';
+    rangeRec.textContent = rangeWarning;
+    recItem.appendChild(rangeRec);
     container.appendChild(recItem);
 }
 
