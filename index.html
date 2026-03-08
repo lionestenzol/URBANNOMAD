@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nomad App</title>
+    <style>
+        /* Base styling */
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --destructive-color: #ef4444;
+            --destructive-hover: #dc2626;
+            --light-bg: #f8fafc;
+            --dark-bg: #0f172a;
+            --light-card: #ffffff;
+            --dark-card: #1e293b;
+            --light-border: #e2e8f0;
+            --dark-border: #334155;
+            --light-text: #334155;
+            --dark-text: #f1f5f9;
+            --light-text-muted: #64748b;
+            --dark-text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .app-title {
+            color: #60a5fa;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 1rem;
+        }
+
+        .tab-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--light-border);
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .tab-list {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .tab-trigger {
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--light-text-muted);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-trigger.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        body.dark-mode .tab-trigger {
+            color: var(--dark-text-muted);
+        }
+
+        body.dark-mode .tab-trigger.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        /* Tab content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--light-card);
+            border: 1px solid var(--light-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .card {
+            background-color: var(--dark-card);
+            border-color: var(--dark-border);
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Form controls */
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 0.5rem;
+            border: 1px solid var(--light-border);
+            border-radius: 0.25rem;
+            width: 100%;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="number"] {
+            background-color: #334155;
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button.destructive {
+            background-color: var(--destructive-color);
+        }
+
+        button.destructive:hover {
+            background-color: var(--destructive-hover);
+        }
+
+        button.full-width {
+            width: 100%;
+        }
+
+        button.ghost {
+            background-color: transparent;
+            color: var(--light-text);
+        }
+
+        body.dark-mode button.ghost {
+            color: var(--dark-text);
+        }
+
+        button.ghost:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode button.ghost:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        button.small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        button.icon {
+            padding: 0.5rem;
+            border-radius: 9999px;
+        }
+
+        /* Grids and layouts */
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .space-y {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Scrollable areas */
+        .scrollable {
+            max-height: 16rem;
+            overflow-y: auto;
+        }
+
+        /* Items */
+        .item {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .zone-item {
+            border: 1px solid var(--light-border);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        body.dark-mode .zone-item {
+            background-color: #334155;
+            border-color: var(--dark-border);
+        }
+
+        .zone-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .zone-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .gear-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--light-border);
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .gear-item {
+            background-color: #334155;
+            border-color: var(--dark-border);
+        }
+
+        .gear-icon {
+            font-size: 2rem;
+            margin-right: 0.75rem;
+        }
+
+        .log-item {
+            background-color: var(--light-bg);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .log-item {
+            background-color: #334155;
+        }
+
+        .item-title {
+            font-weight: 600;
+        }
+
+        .item-subtitle {
+            font-size: 0.875rem;
+            color: var(--light-text-muted);
+        }
+
+        body.dark-mode .item-subtitle {
+            color: var(--dark-text-muted);
+        }
+
+        .item-meta {
+            font-size: 0.75rem;
+            color: var(--light-text-muted);
+            display: flex;
+            align-items: center;
+            margin-top: 0.25rem;
+        }
+
+        body.dark-mode .item-meta {
+            color: var(--dark-text-muted);
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-size: 0.75rem;
+        }
+
+        /* Special items */
+        .category-item {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-green {
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .category-blue {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .category-amber {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        body.dark-mode .category-green {
+            background-color: rgba(16, 185, 129, 0.2);
+        }
+
+        body.dark-mode .category-blue {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        body.dark-mode .category-amber {
+            background-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .category-title {
+            font-weight: 600;
+        }
+
+        .green-text {
+            color: #10b981;
+        }
+
+        .blue-text {
+            color: #3b82f6;
+        }
+
+        .amber-text {
+            color: #f59e0b;
+        }
+
+        /* Utility classes */
+        .flex {
+            display: flex;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-green {
+            color: #10b981;
+        }
+
+        .text-amber {
+            color: #f59e0b;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mr-1 {
+            margin-right: 0.25rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1 class="app-title">Urban Nomad</h1>
+        <button id="theme-toggle" class="ghost icon">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab-list">
+            <button class="tab-trigger active" data-tab="zones">Zones</button>
+            <button class="tab-trigger" data-tab="vehicle">Vehicle</button>
+            <button class="tab-trigger" data-tab="gear">Gear</button>
+        </div>
+
+        <!-- Zones Tab -->
+        <div id="zones-tab" class="tab-content active space-y">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Log Current Zone</h2>
+                    <div class="input-group">
+                        <input type="text" id="location-input" placeholder="Enter zone name">
+                        <button id="log-zone-btn">Log</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Zone Cheat Sheet</h2>
+                    <div class="grid-cols-2 scrollable" id="zones-list">
+                        <!-- Zone items will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="zone-logs-card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h2 class="card-title">Visit Log (<span id="zones-count">0</span>)</h2>
+                        <button class="destructive small" id="clear-zones-btn">Clear</button>
+                    </div>
+                    <div class="scrollable">
+                        <div id="zones-log">
+                            <!-- Zone logs will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Tab -->
+        <div id="vehicle-tab" class="tab-content space-y">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Vehicle Operations</h2>
+                    <div class="input-grid">
+                        <input type="number" id="mileage-input" placeholder="Current Mileage">
+                        <input type="number" id="fuel-input" placeholder="Gallons Added">
+                    </div>
+                    <button class="full-width" id="log-vehicle-btn">Log Fuel & Mileage</button>
+                </div>
+            </div>
+
+            <div class="card" id="vehicle-logs-card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h2 class="card-title">Vehicle Log</h2>
+                        <button class="destructive small" id="clear-vehicle-btn">Clear</button>
+                    </div>
+                    <div class="scrollable">
+                        <div id="vehicle-log">
+                            <!-- Vehicle logs will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gear Tab -->
+        <div id="gear-tab" class="tab-content space-y">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Nomad Gear Kit</h2>
+                    <div id="gear-list">
+                        <!-- Gear items will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Essential Checklist</h2>
+                    <div class="space-y">
+                        <div class="category-item category-green">
+                            <div class="category-title green-text">Stealth Parking Kit</div>
+                            <div class="text-sm">Window covers, blackout curtains, ventilation</div>
+                        </div>
+                        <div class="category-item category-blue">
+                            <div class="category-title blue-text">Power System</div>
+                            <div class="text-sm">Battery bank, inverter, solar panels</div>
+                        </div>
+                        <div class="category-item category-amber">
+                            <div class="category-title amber-text">Comfort & Convenience</div>
+                            <div class="text-sm">Portable toilet, shower bag, cooler/fridge</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Data
+        const zones = [
+            { name: "Gym", function: "Shower, workout, rest", stealth: 5, icon: "🏋️" },
+            { name: "Storage Unit", function: "Offload gear, rotate items", stealth: 5, icon: "📦" },
+            { name: "Paid Parking", function: "Safe overnight rest", stealth: 5, icon: "🅿️" },
+            { name: "Library", function: "Wi-Fi, naps, study", stealth: 4, icon: "📚" },
+            { name: "Park", function: "Outdoor rest and recovery", stealth: 3, icon: "🌳" },
+            { name: "Fast Food", function: "Cheap food, Wi-Fi, power nap", stealth: 3, icon: "🍔" },
+            { name: "Mall", function: "Restrooms, lounges, Wi-Fi", stealth: 4, icon: "🛍️" },
+            { name: "Overpass", function: "Stealth nap zone", stealth: 2, icon: "🌉" },
+            { name: "Back Road", function: "Quick rest zone", stealth: 3, icon: "🛣️" }
+        ];
+
+        const gear = [
+            { name: "Blackout Curtains", desc: "Essential stealth sleeping setup", icon: "🔲" },
+            { name: "Power Inverter", desc: "Charge devices from your car", icon: "⚡" },
+            { name: "Portable Toilet", desc: "Emergency hygiene solution", icon: "🚽" },
+            { name: "Packable Bag", desc: "Compact gear carry for rotation", icon: "👜" },
+            { name: "Window Cover", desc: "Privacy and insulation", icon: "🪟" },
+            { name: "USB Fan", desc: "Cooling without engine running", icon: "💨" }
+        ];
+
+        // State
+        let logs = [];
+        let vehicleLogs = [];
+        let coords = null;
+        let darkMode = false;
+
+        // Memory storage instead of localStorage (for sandboxed environments)
+        const memoryStorage = {};
+
+        const safeStorage = {
+            get: (key, defaultValue) => {
+                try {
+                    return memoryStorage[key] || defaultValue;
+                } catch (e) {
+                    console.error(e);
+                    return defaultValue;
+                }
+            },
+            set: (key, value) => {
+                try {
+                    memoryStorage[key] = value;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+
+        // Load data (using demo data for preview)
+        function loadData() {
+            // Demo data
+            logs = [
+                {
+                    location: "Gym",
+                    time: "4/8/2025, 6:15 AM",
+                    coords: { lat: 37.7749, lng: -122.4194 }
+                },
+                {
+                    location: "Library",
+                    time: "4/8/2025, 1:30 PM",
+                    coords: { lat: 37.7833, lng: -122.4167 }
+                },
+                {
+                    location: "Paid Parking",
+                    time: "4/8/2025, 9:45 PM",
+                    coords: { lat: 37.7694, lng: -122.4862 }
+                }
+            ];
+
+            vehicleLogs = [
+                {
+                    mileage: 153876,
+                    fuel: 12.4,
+                    time: "4/8/2025, 8:45 AM",
+                    mpg: "28.36"
+                },
+                {
+                    mileage: 154228,
+                    fuel: 10.8,
+                    time: "4/9/2025, 2:30 PM",
+                    mpg: "32.59"
+                }
+            ];
+
+            darkMode = false;
+
+            // Apply dark mode if needed
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-icon').textContent = '☀️';
+            }
+
+            // Get geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        coords = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                    },
+                    () => {
+                        // Handle error silently
+                        coords = { lat: 0, lng: 0 };
+                    }
+                );
+            } else {
+                coords = { lat: 0, lng: 0 };
+            }
+        }
+
+        // Save data
+        function saveZoneLogs() {
+            safeStorage.set("urbanNomadLogs", logs);
+            updateZoneLogsUI();
+        }
+
+        function saveVehicleLogs() {
+            safeStorage.set("urbanNomadVehicleLogs", vehicleLogs);
+            updateVehicleLogsUI();
+        }
+
+        // UI Updates
+        function updateZoneLogsUI() {
+            const container = document.getElementById('zones-log');
+            const count = document.getElementById('zones-count');
+            const card = document.getElementById('zone-logs-card');
+
+            // Update count
+            count.textContent = logs.length;
+
+            // Show/hide card based on logs
+            if (logs.length > 0) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+
+            // Clear existing logs
+            container.innerHTML = '';
+
+            // Add each log
+            logs.forEach((log, i) => {
+                const item = document.createElement('div');
+                item.className = 'log-item';
+
+                item.innerHTML = `
+                    <div class="item-title">${log.location}</div>
+                    <div class="item-subtitle">${log.time}</div>
+                    ${coords ? `
+                    <div class="item-meta">
+                        <span class="mr-1">📍</span>
+                        Lat: ${log.coords.lat.toFixed(4)}, Lng: ${log.coords.lng.toFixed(4)}
+                    </div>` : ''}
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        function updateVehicleLogsUI() {
+            const container = document.getElementById('vehicle-log');
+            const card = document.getElementById('vehicle-logs-card');
+
+            // Show/hide card based on logs
+            if (vehicleLogs.length > 0) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+
+            // Clear existing logs
+            container.innerHTML = '';
+
+            // Add each log
+            vehicleLogs.forEach((log, i) => {
+                const item = document.createElement('div');
+                item.className = 'log-item';
+
+                const isMpgGood = log.mpg !== 'N/A' && log.mpg !== 'First entry' && Number(log.mpg) > 25;
+                const mpgClass = isMpgGood ? 'text-green' : 'text-amber';
+
+                item.innerHTML = `
+                    <div class="item-title">${log.mileage.toLocaleString()} miles</div>
+                    <div class="item-subtitle">${log.fuel} gallons</div>
+                    <div class="flex-between text-sm mt-1">
+                        <span class="item-subtitle">${log.time}</span>
+                        <span class="${mpgClass}">
+                            ${log.mpg !== 'N/A' && log.mpg !== 'First entry' ? `${log.mpg} MPG` : log.mpg}
+                        </span>
+                    </div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // Initialize zones list
+        function initZonesList() {
+            const container = document.getElementById('zones-list');
+
+            zones.forEach((zone, i) => {
+                const item = document.createElement('div');
+                item.className = 'zone-item';
+                item.onclick = () => {
+                    document.getElementById('location-input').value = zone.name;
+                };
+
+                let stars = '';
+                for (let i = 0; i < zone.stealth; i++) stars += '★';
+                for (let i = zone.stealth; i < 5; i++) stars += '☆';
+
+                item.innerHTML = `
+                    <div class="text-lg mb-1">${zone.icon}</div>
+                    <div class="item-title">${zone.name}</div>
+                    <div class="text-sm">${zone.function}</div>
+                    <div class="rating mt-1">${stars}</div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // Initialize gear list
+        function initGearList() {
+            const container = document.getElementById('gear-list');
+
+            gear.forEach((item, i) => {
+                const element = document.createElement('div');
+                element.className = 'gear-item';
+
+                element.innerHTML = `
+                    <div class="gear-icon">${item.icon}</div>
+                    <div>
+                        <div class="item-title">${item.name}</div>
+                        <div class="item-subtitle">${item.desc}</div>
+                    </div>
+                `;
+
+                container.appendChild(element);
+            });
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            safeStorage.set("urbanNomadDarkMode", darkMode);
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-icon').textContent = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('theme-icon').textContent = '🌙';
+            }
+        }
+
+        // Log a zone visit
+        function logVisit() {
+            const locationInput = document.getElementById('location-input');
+            const location = locationInput.value.trim();
+
+            if (!location) return;
+
+            logs.push({
+                location,
+                time: new Date().toLocaleString(),
+                coords: coords || { lat: 0, lng: 0 }
+            });
+
+            saveZoneLogs();
+            locationInput.value = '';
+        }
+
+        // Log vehicle data
+        function logVehicle() {
+            const mileageInput = document.getElementById('mileage-input');
+            const fuelInput = document.getElementById('fuel-input');
+
+            const mileage = mileageInput.value.trim();
+            const fuel = fuelInput.value.trim();
+
+            if (!mileage || !fuel) return;
+
+            const newLog = {
+                mileage: Number(mileage),
+                fuel: Number(fuel),
+                time: new Date().toLocaleString(),
+                mpg: vehicleLogs.length > 0
+                    ? calculateMPG(Number(mileage), Number(fuel), vehicleLogs[vehicleLogs.length - 1].mileage)
+                    : 'First entry'
+            };
+
+            vehicleLogs.push(newLog);
+            saveVehicleLogs();
+
+            mileageInput.value = '';
+            fuelInput.value = '';
+        }
+
+        // Calculate MPG
+        function calculateMPG(currentMileage, fuelAdded, lastMileage) {
+            const milesDriven = currentMileage - lastMileage;
+            if (milesDriven <= 0 || fuelAdded <= 0) return 'N/A';
+            return (milesDriven / fuelAdded).toFixed(2);
+        }
+
+        // Clear logs
+        function clearZoneLogs() {
+            logs = [];
+            saveZoneLogs();
+        }
+
+        function clearVehicleLogs() {
+            vehicleLogs = [];
+            saveVehicleLogs();
+        }
+
+        // Tab switching
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all triggers
+            document.querySelectorAll('.tab-trigger').forEach(trigger => {
+                trigger.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+
+            // Add active class to selected trigger
+            document.querySelector(`.tab-trigger[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize
+            loadData();
+            initZonesList();
+            initGearList();
+            updateZoneLogsUI();
+            updateVehicleLogsUI();
+
+            // Theme toggling
+            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+
+            // Tab switching
+            document.querySelectorAll('.tab-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    switchTab(trigger.getAttribute('data-tab'));
+                });
+            });
+
+            // Logging actions
+            document.getElementById('log-zone-btn').addEventListener('click', logVisit);
+            document.getElementById('log-vehicle-btn').addEventListener('click', logVehicle);
+
+            // Clear actions
+            document.getElementById('clear-zones-btn').addEventListener('click', clearZoneLogs);
+            document.getElementById('clear-vehicle-btn').addEventListener('click', clearVehicleLogs);
+        });
+
+        // API Communications
+        // These functions would connect to a Java backend
+        async function syncWithServer() {
+            try {
+                // This would be replaced with actual fetch calls to your Java backend
+                const response = await fetch('/api/sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        logs: logs,
+                        vehicleLogs: vehicleLogs
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Synced with server:', data);
+                    // You could update local data with server data here
+                }
+            } catch (error) {
+                console.error('Error syncing with server:', error);
+            }
+        }
+
+        // You could set up periodic syncing
+        // setInterval(syncWithServer, 60000); // Sync every minute
+    </script>
+</body>
+</html>
