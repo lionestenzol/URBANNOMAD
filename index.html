@@ -69,7 +69,7 @@
 
         .tab-list {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             border-bottom: 1px solid var(--light-border);
             margin-bottom: 1rem;
         }
@@ -443,6 +443,8 @@
             <button class="tab-trigger active" data-tab="zones">Zones</button>
             <button class="tab-trigger" data-tab="vehicle">Vehicle</button>
             <button class="tab-trigger" data-tab="gear">Gear</button>
+            <button class="tab-trigger" data-tab="resources">Resources</button>
+            <button class="tab-trigger" data-tab="survival">Plan</button>
         </div>
 
         <!-- Zones Tab -->
@@ -540,9 +542,87 @@
                 </div>
             </div>
         </div>
+
+        <!-- Resources Tab -->
+        <div id="resources-tab" class="tab-content space-y">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Find Resources</h2>
+                    <div class="grid-cols-2">
+                        <button onclick="loadResources('shower')">🚿 Showers</button>
+                        <button onclick="loadResources('restroom')">🚻 Restrooms</button>
+                        <button onclick="loadResources('wifi')">📶 WiFi</button>
+                        <button onclick="loadResources('parking')">🅿 Parking</button>
+                    </div>
+                    <div id="resource-results" class="scrollable" style="margin-top: 0.75rem;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Report a Spot</h2>
+                    <div class="input-group">
+                        <input type="text" id="spot-name-input" placeholder="Spot name">
+                    </div>
+                    <div class="grid-cols-2 mb-2" id="spot-tags">
+                        <button class="small" onclick="submitSpotReport('safe')">✅ Safe</button>
+                        <button class="small" onclick="submitSpotReport('police')">🚔 Police</button>
+                        <button class="small destructive" onclick="submitSpotReport('unsafe')">⚠️ Unsafe</button>
+                        <button class="small" onclick="submitSpotReport('restroom')">🚻 Restroom</button>
+                        <button class="small" onclick="submitSpotReport('water')">💧 Water</button>
+                        <button class="small" onclick="submitSpotReport('power')">🔌 Power</button>
+                    </div>
+                    <div id="spot-status" class="scrollable"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survival Planner Tab -->
+        <div id="survival-tab" class="tab-content space-y">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Survival Planner</h2>
+                    <div class="input-grid">
+                        <input type="number" id="money" placeholder="Money available ($)">
+                        <input type="number" id="food" placeholder="Daily food cost ($)">
+                        <input type="number" id="gas" placeholder="Gas price ($/gal)">
+                        <input type="number" id="mpg-input" placeholder="Vehicle MPG">
+                    </div>
+                    <button class="full-width" onclick="runSurvival()">Calculate</button>
+                    <div id="survival-result" style="margin-top: 0.75rem;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Quick Reference</h2>
+                    <div class="space-y">
+                        <div class="category-item category-green">
+                            <div class="category-title green-text">Budget Meals</div>
+                            <div class="text-sm">Rice & beans: ~$1.50/meal, PB&J: ~$1/meal, Oatmeal: ~$0.50/meal</div>
+                        </div>
+                        <div class="category-item category-blue">
+                            <div class="category-title blue-text">Free Resources</div>
+                            <div class="text-sm">Libraries (WiFi), parks (rest), churches (meals), shelters (showers)</div>
+                        </div>
+                        <div class="category-item category-amber">
+                            <div class="category-title amber-text">Income Ideas</div>
+                            <div class="text-sm">Day labor apps, gig driving, plasma donation, seasonal work</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Module Scripts -->
+    <script src="js/resources.js"></script>
+    <script src="js/geo.js"></script>
+    <script src="js/resourceEngine.js"></script>
+    <script src="js/survivalEngine.js"></script>
+    <script src="js/spotEngine.js"></script>
+
+    <!-- Main Application -->
     <script>
         // Data
         const zones = [
@@ -909,6 +989,102 @@
             document.getElementById('clear-zones-btn').addEventListener('click', clearZoneLogs);
             document.getElementById('clear-vehicle-btn').addEventListener('click', clearVehicleLogs);
         });
+
+        // Resource Finder
+        function loadResources(type) {
+            const results = findNearbyResources(coords, type);
+            const container = document.getElementById('resource-results');
+            container.innerHTML = '';
+
+            if (results.length === 0) {
+                container.innerHTML = '<div class="log-item"><div class="item-title">No results found</div><div class="item-subtitle">Try a different category</div></div>';
+                return;
+            }
+
+            results.forEach(r => {
+                const el = document.createElement('div');
+                el.className = 'log-item';
+                el.innerHTML = `
+                    <div class="item-title">${r.name}</div>
+                    <div class="item-subtitle">${r.distance.toFixed(2)} km away</div>
+                    <div class="item-meta">${r.cost}${r.open ? ' &middot; ' + r.open : ''}</div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // Survival Calculator
+        function runSurvival() {
+            const money = Number(document.getElementById('money').value);
+            const food = Number(document.getElementById('food').value);
+            const gas = Number(document.getElementById('gas').value);
+            const mpgVal = Number(document.getElementById('mpg-input').value);
+
+            if (!money || !food || !gas || !mpgVal) {
+                document.getElementById('survival-result').innerHTML = '<div class="log-item"><div class="item-subtitle">Please fill in all fields</div></div>';
+                return;
+            }
+
+            const result = calculateSurvival({
+                money,
+                dailyFood: food,
+                gasPrice: gas,
+                mpg: mpgVal
+            });
+
+            const fuelGallons = (money / gas).toFixed(1);
+
+            document.getElementById('survival-result').innerHTML = `
+                <div class="log-item">
+                    <div class="item-title">Food Budget</div>
+                    <div class="item-subtitle">${result.foodDays} days of food at $${food}/day</div>
+                </div>
+                <div class="log-item">
+                    <div class="item-title">Fuel Range</div>
+                    <div class="item-subtitle">${result.range.toFixed(0)} miles (${fuelGallons} gallons at $${gas}/gal)</div>
+                </div>
+                <div class="log-item">
+                    <div class="item-title">Recommendation</div>
+                    <div class="item-subtitle">${result.foodDays < 7 ? '⚠️ Low on food budget — seek free meal resources' : '✅ Food budget looks stable'}</div>
+                    <div class="item-subtitle">${result.range < 100 ? '⚠️ Limited range — minimize driving' : '✅ Decent travel range'}</div>
+                </div>
+            `;
+        }
+
+        // Spot Reporting
+        function submitSpotReport(tag) {
+            const nameInput = document.getElementById('spot-name-input');
+            const name = nameInput.value.trim();
+
+            if (!name) return;
+
+            reportSpot({
+                name,
+                tag,
+                spotCoords: coords || { lat: 0, lng: 0 }
+            });
+
+            nameInput.value = '';
+            updateSpotStatus(name);
+        }
+
+        function updateSpotStatus(name) {
+            const status = getSpotStatus(name);
+            const container = document.getElementById('spot-status');
+
+            const tagIcons = {
+                safe: '✅', police: '🚔', unsafe: '⚠️',
+                restroom: '🚻', water: '💧', power: '🔌'
+            };
+
+            let html = `<div class="log-item"><div class="item-title">${name}</div>`;
+            for (const [tag, count] of Object.entries(status)) {
+                html += `<span class="item-subtitle mr-1">${tagIcons[tag] || ''} ${tag}: ${count}</span> `;
+            }
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
 
         // API Communications
         // These functions would connect to a Java backend
