@@ -62,7 +62,7 @@ body.dark-mode .app-title {
 
 .tab-list {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     border-bottom: 1px solid var(--light-border);
     margin-bottom: 1rem;
 }
@@ -444,4 +444,64 @@ input[type="range"] {
 
 .hidden {
     display: none;
+}
+
+/* Help section accordion */
+.help-section {
+    margin: 0;
+}
+
+.help-summary {
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.help-summary::-webkit-details-marker {
+    display: none;
+}
+
+.help-summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--light-text-muted);
+    transition: transform 0.2s;
+}
+
+body.dark-mode .help-summary::after {
+    color: var(--dark-text-muted);
+}
+
+details[open] > .help-summary::after {
+    content: '\2212';
+}
+
+.help-body {
+    padding: 0.5rem 0 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--light-text);
+}
+
+body.dark-mode .help-body {
+    color: var(--dark-text);
+}
+
+.help-body ul {
+    padding-left: 1.25rem;
+    margin: 0.25rem 0;
+}
+
+.help-body li {
+    margin-bottom: 0.35rem;
+}
+
+.help-body p {
+    margin-bottom: 0.25rem;
 }

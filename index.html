@@ -28,6 +28,7 @@
             <button class="tab-trigger" data-tab="resources" role="tab" aria-selected="false" aria-controls="resources-tab">Resources</button>
             <button class="tab-trigger" data-tab="survival" role="tab" aria-selected="false" aria-controls="survival-tab">Plan</button>
             <button class="tab-trigger" data-tab="settings" role="tab" aria-selected="false" aria-controls="settings-tab">Settings</button>
+            <button class="tab-trigger" data-tab="help" role="tab" aria-selected="false" aria-controls="help-tab">Help</button>
         </div>
 
         <!-- Zones Tab -->
@@ -246,6 +247,167 @@
                     <input type="file" id="import-file" accept=".json">
                     <button class="full-width" id="import-btn" style="margin-top: 0.5rem;">Import Backup</button>
                     <div id="import-status" style="margin-top: 0.5rem;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Help Tab -->
+        <div id="help-tab" class="tab-content" role="tabpanel">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Welcome to Urban Nomad</h2>
+                    <p class="text-sm" style="margin-bottom: 0.5rem;">Your all-in-one companion for vehicle dwelling. This guide explains every feature so you can get the most out of the app.</p>
+                    <p class="item-subtitle">Tap any section below to expand it.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Getting Started</summary>
+                        <div class="help-body">
+                            <p>Urban Nomad works entirely offline and stores all data on your device. No account or internet connection required.</p>
+                            <ul>
+                                <li><strong>Allow location access</strong> when prompted — this powers zone logging, resource finding, and spot notes.</li>
+                                <li><strong>Use the tabs</strong> at the top to navigate between features.</li>
+                                <li><strong>Dark mode</strong> — tap the moon icon in the header to switch themes (easier on the eyes at night).</li>
+                                <li><strong>Back up your data</strong> regularly using Settings > Export Backup.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Zones Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> Track where you park and sleep. Build a personal log of locations you've visited.</p>
+                            <ul>
+                                <li><strong>Log a zone</strong> — type a name or tap one from the Zone Cheat Sheet, then hit "Log".</li>
+                                <li><strong>Zone Cheat Sheet</strong> — common urban nomad parking spots rated by stealth level (more stars = more discreet).</li>
+                                <li><strong>Visit Log</strong> — your history of logged zones with timestamps and GPS coordinates.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Vehicle Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> Track fuel usage and calculate your miles per gallon (MPG).</p>
+                            <ul>
+                                <li><strong>Log fuel</strong> — enter your current odometer reading and gallons added, then tap "Log Fuel & Mileage".</li>
+                                <li><strong>MPG calculation</strong> — after your second entry, the app auto-calculates MPG based on miles driven between fill-ups.</li>
+                                <li><strong>Odometer validation</strong> — the app prevents logging a mileage lower than your last entry to keep data accurate.</li>
+                            </ul>
+                            <p class="item-subtitle mt-1">Tip: Log every fill-up for the most accurate MPG tracking.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Gear Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> A reference list of essential gear for vehicle dwelling.</p>
+                            <ul>
+                                <li><strong>Nomad Gear Kit</strong> — curated items like blackout curtains, power inverters, and USB fans.</li>
+                                <li><strong>Essential Checklist</strong> — grouped into Stealth Parking, Power System, and Comfort categories.</li>
+                            </ul>
+                            <p class="item-subtitle mt-1">Use this as a shopping/packing checklist when outfitting your vehicle.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Resources Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> Find nearby showers, restrooms, WiFi, and parking — plus save your own spots.</p>
+                            <ul>
+                                <li><strong>Find Resources</strong> — tap a category (Showers, Restrooms, WiFi, Parking) to see nearby options sorted by distance.</li>
+                                <li><strong>Refresh Location</strong> — update your GPS position for more accurate results.</li>
+                                <li><strong>Add Resource</strong> — save a new resource with name, type, coordinates, cost, and hours. Use "Use My Location" to auto-fill GPS.</li>
+                                <li><strong>My Resources</strong> — view and manage resources you've added.</li>
+                                <li><strong>My Spot Notes</strong> — tag locations as safe, unsafe, police activity, etc. These are private notes stored only on your device.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Plan Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> Calculate how long your money will last for food and fuel.</p>
+                            <ul>
+                                <li><strong>Enter your budget</strong> — money available, daily food cost, gas price per gallon, and your vehicle's MPG.</li>
+                                <li><strong>Food/Fuel slider</strong> — drag to adjust how much of your budget goes to food vs. fuel (default 70/30).</li>
+                                <li><strong>Auto MPG</strong> — if you've logged vehicle data, MPG is pre-filled automatically.</li>
+                                <li><strong>Results</strong> — shows days of food, miles of range, and recommendations based on your situation.</li>
+                            </ul>
+                            <p class="item-subtitle mt-1">Check the Quick Reference below the planner for budget meal ideas and free resource tips.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Settings Tab</summary>
+                        <div class="help-body">
+                            <p><strong>What it does:</strong> Back up and restore all your app data.</p>
+                            <ul>
+                                <li><strong>Export Backup</strong> — downloads a JSON file with all your zones, vehicle logs, resources, and spot notes.</li>
+                                <li><strong>Import Backup</strong> — upload a previously exported file to restore your data. This replaces all current data.</li>
+                            </ul>
+                            <p class="item-subtitle mt-1">Back up regularly, especially before clearing your browser data.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">Safety Tips</summary>
+                        <div class="help-body">
+                            <ul>
+                                <li><strong>Rotate spots</strong> — don't park in the same place every night. Use 3-4 spots in rotation.</li>
+                                <li><strong>Stay low-key</strong> — arrive late, leave early. Avoid running lights or making noise.</li>
+                                <li><strong>Know local laws</strong> — overnight parking rules vary by city. Check before settling in.</li>
+                                <li><strong>Have an exit plan</strong> — always know your route out if you need to leave quickly.</li>
+                                <li><strong>Trust your instincts</strong> — if a spot feels wrong, move. Your safety comes first.</li>
+                                <li><strong>Keep your vehicle ready</strong> — maintain enough fuel to relocate at any time.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <details class="help-section">
+                        <summary class="help-summary">FAQ</summary>
+                        <div class="help-body">
+                            <p><strong>Is my data shared or uploaded anywhere?</strong><br>No. Everything is stored locally on your device using your browser's storage. Nothing leaves your phone or computer.</p>
+                            <p style="margin-top: 0.5rem;"><strong>Will I lose my data if I clear my browser?</strong><br>Yes. Use Settings > Export Backup to save a copy before clearing browser data.</p>
+                            <p style="margin-top: 0.5rem;"><strong>Does this work offline?</strong><br>Yes. The app is a Progressive Web App (PWA) and works without an internet connection after the first load.</p>
+                            <p style="margin-top: 0.5rem;"><strong>How do I install it on my phone?</strong><br>Open the app in your mobile browser, then tap "Add to Home Screen" (Safari) or the install prompt (Chrome).</p>
+                            <p style="margin-top: 0.5rem;"><strong>Why does it ask for my location?</strong><br>Location is used to log GPS coordinates with your zones, find nearby resources, and tag spot notes. You can deny it — the app still works, just without location features.</p>
+                        </div>
+                    </details>
                 </div>
             </div>
         </div>
