@@ -1,6 +1,6 @@
-export function calculateSurvival({ money, dailyFood, gasPrice, mpg }) {
-  const foodBudget = money * 0.7;
-  const fuelBudget = money * 0.3;
+export function calculateSurvival({ money, dailyFood, gasPrice, mpg, foodRatio = 0.7 }) {
+  const foodBudget = money * foodRatio;
+  const fuelBudget = money * (1 - foodRatio);
 
   const foodDays = Math.floor(foodBudget / dailyFood);
   const gallons = fuelBudget / gasPrice;
@@ -12,6 +12,7 @@ export function calculateSurvival({ money, dailyFood, gasPrice, mpg }) {
     gallons,
     money,
     foodBudget,
-    fuelBudget
+    fuelBudget,
+    foodRatio
   };
 }

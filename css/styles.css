@@ -62,7 +62,7 @@ body.dark-mode .app-title {
 
 .tab-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     border-bottom: 1px solid var(--light-border);
     margin-bottom: 1rem;
 }
@@ -162,8 +162,18 @@ input[type="number"] {
     color: var(--light-text);
 }
 
+select {
+    padding: 0.5rem;
+    border: 1px solid var(--light-border);
+    border-radius: 0.25rem;
+    width: 100%;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+}
+
 body.dark-mode input[type="text"],
-body.dark-mode input[type="number"] {
+body.dark-mode input[type="number"],
+body.dark-mode select {
     background-color: #334155;
     border-color: var(--dark-border);
     color: var(--dark-text);
@@ -416,6 +426,20 @@ body.dark-mode .category-amber {
 
 .mr-1 {
     margin-right: 0.25rem;
+}
+
+input[type="file"] {
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    color: var(--light-text);
+}
+
+body.dark-mode input[type="file"] {
+    color: var(--dark-text);
+}
+
+input[type="range"] {
+    accent-color: var(--primary-color);
 }
 
 .hidden {

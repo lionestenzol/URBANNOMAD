@@ -1,12 +1,14 @@
 import { resources } from './resources.js';
 import { getDistance } from './geo.js';
+import { getUserResources } from './state.js';
 
 const MAX_RADIUS_KM = 50;
 
 export function findNearbyResources(userCoords, type) {
   if (!userCoords) return [];
 
-  return resources
+  const allResources = [...resources, ...getUserResources()];
+  return allResources
     .filter(r => r.type === type)
     .map(r => ({
       ...r,
