@@ -2,7 +2,7 @@ let spotReports = [];
 
 const SPOT_TAGS = ["safe", "police", "unsafe", "restroom", "water", "power"];
 
-function reportSpot({ name, tag, spotCoords }) {
+export function reportSpot({ name, tag, spotCoords }) {
   if (!SPOT_TAGS.includes(tag)) return false;
 
   spotReports.push({
@@ -15,11 +15,11 @@ function reportSpot({ name, tag, spotCoords }) {
   return true;
 }
 
-function getSpotReports(name) {
+export function getSpotReports(name) {
   return spotReports.filter(r => r.name === name);
 }
 
-function getSpotStatus(name) {
+export function getSpotStatus(name) {
   const list = getSpotReports(name);
   const counts = {};
 

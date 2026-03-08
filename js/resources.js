@@ -1,4 +1,4 @@
-const resources = [
+export const resources = [
   {
     id: "planet_fitness",
     name: "Planet Fitness",

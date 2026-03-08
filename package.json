@@ -1,0 +1,9 @@
+{
+  "name": "urban-nomad",
+  "version": "1.0.0",
+  "description": "Zone tracking, resource finder, and survival planner for vehicle dwellers",
+  "scripts": {
+    "serve": "npx serve ."
+  },
+  "private": true
+}
